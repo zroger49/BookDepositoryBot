@@ -71,7 +71,10 @@ def format_book_list(book_list):
     """Formats the list of books into a single string message to send """ 
     text_to_send = ""
     for book in book_list: 
-        text_to_send += f"{book.title}\nPrice: {book.current_price}€\nDiscount: {book.discount}% \n\n"
+        if book.current_price == "Book out of stock": 
+            text_to_send += f"{book.title}\n{book.current_price}\nDiscount: {book.discount}% \n\n"    
+        else: 
+            text_to_send += f"{book.title}\nPrice: {book.current_price}€\nDiscount: {book.discount}% \n\n"
     return text_to_send
 
 def run_bot(): 
@@ -79,9 +82,9 @@ def run_bot():
 
     @bot.message_handler(commands=['start'])
     def handle_start_comand(message): 
-        while (True): 
-            time.sleep(86400)        
+        while (True):         
             bot.reply_to(message, format_book_list(get_book_list()))
+            time.sleep(86400)
 
     @bot.message_handler(commands=['wishlist'])
     def handle_wishlist_command(message):
