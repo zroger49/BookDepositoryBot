@@ -1,2 +1,2 @@
 # BookDepositoryBot
-A bot to check daily Book depository
+A simple bot to check Book depository on a daily basis
