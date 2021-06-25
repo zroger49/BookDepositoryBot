@@ -1,7 +1,4 @@
 """Class for holding and parsing information about each book"""
-
-from setting import *
-
 class book_info:
     def __init__(self, wish_list_item):
         self.wish_list_item = wish_list_item
