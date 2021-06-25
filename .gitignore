@@ -1,3 +1,4 @@
 #File storing the bot token
 const.py
 README.md
+__pycache__
