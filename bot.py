@@ -80,7 +80,7 @@ def run_bot():
     @bot.message_handler(commands=['start'])
     def handle_start_comand(message): 
         while (True): 
-            time.sleep(20)        
+            time.sleep(86400)        
             bot.reply_to(message, format_book_list(get_book_list()))
 
     @bot.message_handler(commands=['wishlist'])
