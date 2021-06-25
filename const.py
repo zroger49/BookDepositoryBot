@@ -1,0 +1,2 @@
+BOT_TOKEN=""
+WISH_LIST_CODE = ""
