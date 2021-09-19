@@ -4,17 +4,13 @@
 #General libraries
 import re 
 
-#Webparsing libraries
 from bs4 import BeautifulSoup
 import requests
 
 
-#book class
 from book_info import book_info
-
-#import cost
 from const import WISH_LIST_CODE
-
+from request import send_wishlist_request
 
 def verify_homepage(soup):
     """verify the wishlist code (wrong wishlist codes redirect to homepage)"""
@@ -41,30 +37,30 @@ def get_wish_list_len(soup):
     return int(re_search.group(1))
 
 
+
 def get_book_list():
     """Store information about the books in a list"""
-    wishlist = requests.get(
-        f"https://www.bookdepository.com/wishlists/{WISH_LIST_CODE}"
-    )
-    soup = BeautifulSoup(wishlist.content, "html.parser")
-    if not verify_homepage(soup):
-        raise Exception("Error: invalid wishlist code")
+    wishlist = send_wishlist_request(f"https://www.bookdepository.com/wishlists/{WISH_LIST_CODE}")
+    if wishlist: 
+        soup = BeautifulSoup(wishlist.content, "html.parser")
+        if not verify_homepage(soup):
+            raise Exception("Error: invalid wishlist code")
 
-    book_list = []
-    wish_list_len = get_wish_list_len(soup)
-    for page_number in range(1, wish_list_len + 1): #Loops through the wishlist pages
-        if page_number != 1:
-            # updates wishlist link for i != 1
-            wishlist = requests.get(f"https://www.bookdepository.com/wishlists/{WISH_LIST_CODE}?page={page_number}")
-            soup = BeautifulSoup(wishlist.content, "html.parser")
-        # gets all books in the page
-        wish_list_items = soup.find_all("div", class_="book-item")
-        for item in wish_list_items:
-            book = book_info(item)
-            book.get_item_info()
-            book_list.append(book) #Add the information to the bookList
-    
-    return book_list
+        book_list = []
+        wish_list_len = get_wish_list_len(soup)
+        for page_number in range(1, wish_list_len + 1): #Loops through the wishlist pages
+            if page_number != 1:
+                # updates wishlist link for i != 1
+                wishlist = requests.get(f"https://www.bookdepository.com/wishlists/{WISH_LIST_CODE}?page={page_number}")
+                soup = BeautifulSoup(wishlist.content, "html.parser")
+            # gets all books in the page
+            wish_list_items = soup.find_all("div", class_="book-item")
+            for item in wish_list_items:
+                book = book_info(item)
+                book.get_item_info()
+                book_list.append(book) #Add the information to the bookList
+        
+        return book_list
 
 def format_book_list(book_list):
     """Formats the list of books into a single string message to send """ 
