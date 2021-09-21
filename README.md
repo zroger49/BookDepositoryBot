@@ -7,3 +7,5 @@ A simple bot to check Book depository on a daily basis
 - Rename const to const.py and add your Telegram Key and wishlist 
 - Run bot.py 
 
+## TODO
+- Keep records of the books in an SQL database
